@@ -1,4 +1,4 @@
-import { text } from "express";
+
 import mongoose, { Types } from "mongoose";
 
 const TodoSchema = new mongoose.Schema({
@@ -7,12 +7,11 @@ const TodoSchema = new mongoose.Schema({
         required : true
     },
     complete: {
-        type: Boolean
+        type: Boolean,
+        default: false        
 
     }
 }) 
-
-
 
 
 

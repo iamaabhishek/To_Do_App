@@ -1,39 +1,38 @@
-import express from "express"
-import dotenv from "dotenv"
-import mongoose from "mongoose"
+import express from "express";
+import dotenv from "dotenv";
+import mongoose from "mongoose";
 
-import todoRoute from "../backend/routes/Todo.route.js"
+import todoRoute from "./routes/Todo.route.js";
 
-const app = express()
+dotenv.config({ quiet: true });
 
-dotenv.config()
+const app = express();
+const port = process.env.PORT || 4000;
+const DB_URL = process.env.MONGODB_URL;
 
-const port = process.env.PORT || 4000
-const DB_URL = process.env.MONGODB_URL
+// middleware (MUST be before routes)
+app.use(express.json());
 
-
-// 
-try {
-  await  mongoose.connect(DB_URL);
-  console.log("Conected To Mongo")
-} catch (error) {
-  console.log(error)
-}
-
-
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
-
-
-// 
-app.use(express.json())
-app.use('/todo',todoRoute)
+// routes
+app.use("/todo", todoRoute);
 
 
 
 
 
-app.listen(port, () => {
-  console.log(`http://localhost:${port}`)
-})
+
+
+
+// connect DB & start server
+mongoose.connect(DB_URL)
+  .then(() => {
+    console.log("Connected To MongoDB");
+
+    app.listen(port, () => {
+      console.log(`Server running → http://localhost:${port}`);
+    });
+  })
+  .catch((error) => {
+    console.error("MongoDB Connection Failed 👉", error.message);
+    process.exit(1); // stop app if DB fails
+  });
