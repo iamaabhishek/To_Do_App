@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 
 import todoRoute from "./routes/Todo.route.js";
+import userRoute from "./routes/user.route.js";
 
 dotenv.config({ quiet: true });
 
@@ -15,6 +16,8 @@ app.use(express.json());
 
 // routes
 app.use("/todo", todoRoute);
+app.use("/user",userRoute);
+
 
 
 
